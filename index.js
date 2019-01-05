@@ -155,7 +155,6 @@ function initializePages(pages) {
 }
 
 function initializeKey(key) {
-<<<<<<< HEAD
   key.type = Array.isArray(key.type) ? key.type : [key.type];
 
   key.type.forEach((type) => {
@@ -164,6 +163,9 @@ function initializeKey(key) {
         createToggleLedButton(key);
         break;
       case 'button':
+        createMomentaryButton(key);
+        break;
+      case 'stateButton':
         createMomentaryButton(key);
         break;
       case 'page':
@@ -180,28 +182,6 @@ function initializeKey(key) {
         break;
     }
   });
-=======
-  switch (key.type) {
-    case 'ledButton':
-      createToggleLedButton(key);
-      break;
-    case 'button':
-      createMomentaryButton(key);
-      break;
-    case 'stateButton':
-      createMomentaryButton(key);
-      break;
-    case 'page':
-      createPageButton(key);
-      break;
-    case 'pageWithAction':
-      createMomentaryPageButton(key.button, key.page, key.upImage, key.downImage, key.number);
-      break;
-    case 'custom':
-      key.fn();
-      break;
-  }
->>>>>>> d036ad114ae2ae7933266adc908c9b8181d25b7c
 }
 
 var currentPage;
@@ -234,7 +214,6 @@ function draw(key) {
 }
 
 function addKeyListener(key) {
-<<<<<<< HEAD
   key.type.forEach((type) => {
     if (type == 'ledButton') {
       streamDeck.on(`down:${key.number}`, () => {
@@ -271,58 +250,25 @@ function addKeyListener(key) {
         displayPage(key.page);
       });
     }
+    else if (key.type == 'stateButton') {
+      var upImagePath = path.resolve(IMAGE_FOLDER + key.upImage);
+      var downImagePath = path.resolve(IMAGE_FOLDER + key.downImage);
+  
+      streamDeck.on(`down:${key.number}`, () => {
+        if (key.state == 1) {
+          key.state = 0;
+          api.sendMessage(`${key.button} 0\n`);
+          key.currentImage = upImagePath;
+          draw(key);
+        } else {
+          key.state = 1;
+          api.sendMessage(`${key.button} 1\n`);
+          key.currentImage = downImagePath;
+          draw(key);
+        }
+      });
+    }
   });
-}
-=======
-  if (key.type == 'ledButton') {
-    streamDeck.on(`down:${key.number}`, () => {
-      api.sendMessage(`${key.button} 1\n`);
-    });
-
-    streamDeck.on(`up:${key.number}`, () => {
-      api.sendMessage(`${key.button} 0\n`);
-    });
-  }
-  else if (key.type == 'button') {
-    var upImagePath = path.resolve(IMAGE_FOLDER + key.upImage);
-    var downImagePath = path.resolve(IMAGE_FOLDER + key.downImage);
-
-    streamDeck.on(`down:${key.number}`, () => {
-      api.sendMessage(`${key.button} 1\n`);
-      key.currentImage = downImagePath;
-      draw(key);
-    });
-
-    streamDeck.on(`up:${key.number}`, () => {
-      api.sendMessage(`${key.button} 0\n`);
-      key.currentImage = upImagePath;
-      draw(key);
-    });
-  }
-  else if (key.type == 'page') {
-    streamDeck.on(`down:${key.number}`, () => {
-      displayPage(key.page);
-    });
-  }
-  else if (key.type == 'stateButton') {
-    var upImagePath = path.resolve(IMAGE_FOLDER + key.upImage);
-    var downImagePath = path.resolve(IMAGE_FOLDER + key.downImage);
->>>>>>> d036ad114ae2ae7933266adc908c9b8181d25b7c
-
-    streamDeck.on(`down:${key.number}`, () => {
-      if (key.state == 1) {
-        key.state = 0;
-        api.sendMessage(`${key.button} 0\n`);
-        key.currentImage = upImagePath;
-        draw(key);
-      } else {
-        key.state = 1;
-        api.sendMessage(`${key.button} 1\n`);
-        key.currentImage = downImagePath;
-        draw(key);
-      }
-    });
-  }
 }
 /**
  * Create a button that has a LED in it.
