@@ -11,6 +11,7 @@ api.startListening();
 
 process.on('SIGINT', () => {
   streamDeck.reset();
+  streamDeck.close();
   api.stopListening();
   process.exit();
 });
