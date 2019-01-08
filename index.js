@@ -300,13 +300,11 @@ function createPageButton(key) {
     var imagePath = path.join(IMAGE_FOLDER, key.image);
     key.currentImage = imagePath;
     draw(key);
-    addKeyListener(key);
   }
   else if (key.text) {
     streamDeck.drawText(key.text, key.number, { x: 6, fontFile: './fonts/consolas-24-white/consolas-24-white.fnt', bufferOnly: true }).then((buffer) => {
       key.currentImageBuffer = buffer;
       draw(key);
-      addKeyListener(key);
     });
   }
 }
@@ -319,7 +317,6 @@ function createMomentaryButton(key) {
   key.currentImage = upImagePath;
 
   draw(key);
-  addKeyListener(key);
 }
 
 function createMomentaryPageButton(buttonIdentifier, page, upImage, downImage, buttonNumber) {
@@ -335,13 +332,11 @@ function createKeyboardButton(key) {
     var imagePath = path.join(IMAGE_FOLDER, key.image);
     key.currentImage = imagePath;
     draw(key);
-    addKeyListener(key);
   }
   else if (key.text) {
     streamDeck.drawText(key.text, key.number, { bufferOnly: true }).then((buffer) => {
       key.currentImageBuffer = buffer;
       draw(key);
-      addKeyListener(key);
     });
   }
 }
