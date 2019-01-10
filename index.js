@@ -21,15 +21,23 @@ streamDeck.reset();
 var pages = {
   MAIN: {
     1: {
-      view: { type: 'stateImage', input: 'ANTI_SKID_SWITCH', states: { '0': 'AP_B_off.png', '1': 'AP_B_on.png' }},
+      view: { type: 'state_image', input: 'ANTI_SKID_SWITCH', states: { '0': 'AP_B_off.png', '1': 'AP_B_on.png' }},
       action: { type: 'cycle_state', output: 'ANTI_SKID_SWITCH', values: ['0', '1'] }
     },
     2: {
-      view: { type: 'label', text: 'AAP'},
-      action: { type: 'page', page: 'AAP' }
+      view: { type: 'state_label', text: 'LIGHTS', input: 'LANDING_LIGHTS', states: { '0': 'TAXI', '1': 'OFF', '2': 'LAND' }},
+      action: { type: 'cycle_state', output: 'LANDING_LIGHTS', values: ['0', '1', '2'] }
     },
+    3: {
+      view: { type: 'led_label', text: 'ANTI SKID', input: 'ANTI_SKID_SWITCH' },
+      action: { type: 'cycle_state', output: 'ANTI_SKID_SWITCH', values: ['0', '1'] }
+    },    
     5: {
-      view: { type: 'stateImage', input: 'MASTER_CAUTION', states: { '0': 'AP_B_off.png', '1': 'AP_B_on.png' }},
+      view: { type: 'state_image', input: 'MASTER_CAUTION', states: { '0': 'AP_B_off.png', '1': 'AP_B_on.png' }},
+      action: { type: 'push_button', output: 'UFC_MASTER_CAUTION' }
+    },
+    6: {
+      view: { type: 'led_label', text: 'MASTER CAUTION', input: 'MASTER_CAUTION', onColor: 0xFFA50000 },
       action: { type: 'push_button', output: 'UFC_MASTER_CAUTION' }
     },
   },
@@ -50,7 +58,7 @@ var initializeViewFn = {
 var initializeActionFn = {
 }
 
-initializeViewFn['stateImage'] = function(view, key) {
+initializeViewFn['state_image'] = function(view, key) {
   // Draw the new image when the LED state changes.
   api.on(view.input, (currentValue) => {
     view.currentImage = path.resolve(IMAGE_FOLDER + view.states[currentValue]);
@@ -58,12 +66,38 @@ initializeViewFn['stateImage'] = function(view, key) {
   });
 }
 
+initializeViewFn['state_label'] = function(view, key) {
+  api.on(view.input, (currentValue) => {
+    streamDeck.drawText(view.text + " " + view.states[currentValue], view.number, { x: 2, bufferOnly: true }).then((buffer) => {
+      view.currentImageBuffer = buffer;
+      draw(view)
+    })
+  })
+}
+
+initializeViewFn['led_label'] = function(view, key) {
+  api.on(view.input, (currentValue) => {
+    streamDeck.drawText(view.text, view.number, 
+        { x: 2, 
+          bufferOnly: true, 
+          fontFile: streamDeck.getFontFile('SANS', '16', currentValue  == '1' ? 'BLACK' : 'WHITE'),
+          background: currentValue == '1' ? (view.onColor || 0xffffff00)   : 0x00000000
+         }
+    ).then((buffer) => {
+      view.currentImageBuffer = buffer;
+      draw(view)
+    }).catch((buffer) => {
+      console.log(error)
+    })
+  })
+}
+
 initializeViewFn['label'] = function(view, key) {
   // Draw a static label
-  streamDeck.drawText(view.text, view.number, { x: 6, fontFile: './fonts/consolas-24-white/consolas-24-white.fnt', bufferOnly: true }).then((buffer) => {
-    view.currentImageBuffer = buffer;
-    draw(view);
-  });
+  streamDeck.drawText(view.text, view.number, { x: 6,  bufferOnly: true }).then((buffer) => {
+    view.currentImageBuffer = buffer
+    draw(view)
+  })
 }
 
 initializeActionFn['cycle_state'] = function(action, key) {
@@ -159,74 +193,6 @@ function draw(view) {
   else {
     streamDeck.drawColor(0x000000, view.number);
   }
-}
-
-function addKeyListener(key) {
-  /*
-  key.type.forEach((type) => {
-    if (type == 'ledButton') {
-      streamDeck.on(`down:${key.number}`, () => {
-        api.sendMessage(`${key.button} 1\n`);
-      });
-
-      streamDeck.on(`up:${key.number}`, () => {
-        api.sendMessage(`${key.button} 0\n`);
-      });
-    }
-    else if (type == 'button') {
-      var upImagePath = path.resolve(IMAGE_FOLDER + key.upImage);
-      var downImagePath = path.resolve(IMAGE_FOLDER + key.downImage);
-
-      streamDeck.on(`down:${key.number}`, () => {
-        api.sendMessage(`${key.button} 1\n`);
-        key.currentImage = downImagePath;
-        draw(key);
-      });
-
-      streamDeck.on(`up:${key.number}`, () => {
-        api.sendMessage(`${key.button} 0\n`);
-        key.currentImage = upImagePath;
-        draw(key);
-      });
-    }
-    else if (type == 'keyboard') {
-      streamDeck.on(`down:${key.number}`, () => {
-        pressKeyboard(key.keys);
-      });
-    }
-    else if (type == 'page') {
-      streamDeck.on(`down:${key.number}`, () => {
-        displayPage(key.page);
-      });
-    }
-    else if (key.type == 'stateButton') {
-      var upImagePath = path.resolve(IMAGE_FOLDER + key.upImage);
-      var downImagePath = path.resolve(IMAGE_FOLDER + key.downImage);
-  
-      streamDeck.on(`down:${key.number}`, () => {
-        if (key.state == 1) {
-          key.state = 0;
-          api.sendMessage(`${key.button} 0\n`);
-          key.currentImage = upImagePath;
-          draw(key);
-        } else {
-          key.state = 1;
-          api.sendMessage(`${key.button} 1\n`);
-          key.currentImage = downImagePath;
-          draw(key);
-        }
-      });
-    }
-    else if (key.type == 'toggleButton') {
-      var upImagePath = path.resolve(IMAGE_FOLDER + key.upImage);
-      var downImagePath = path.resolve(IMAGE_FOLDER + key.downImage);
-  
-      streamDeck.on(`down:${key.number}`, () => {
-        api.sendMessage(`${key.button} INC\n`);
-      })
-    }    
-  });
-  */
 }
 
 /**
