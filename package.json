@@ -8,7 +8,7 @@
   "author": "Daniel Tian <dftian@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^3.19.0"
+    "eslint": "^5.12.0"
   },
   "description": "Displays Ka-50 controls on an Elgato Stream Deck controller. Requires DCS BIOS.",
   "dependencies": {
@@ -17,6 +17,7 @@
     "dcs-bios-api": "latest",
     "robotjs": "^0.5.1",
     "stream-deck-api": "latest",
-    "nan": "latest"
+    "nan": "latest",
+    "jimp": "^0.6.0"
   }
 }
