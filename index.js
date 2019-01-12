@@ -21,28 +21,22 @@ streamDeck.reset();
 var pages = {
   MAIN: {
     1: {
-      view: { type: 'led_label', text: 'ANTI SKID', input: 'ANTI_SKID_SWITCH' },
+      view: { type: 'state_image', input: 'ANTI_SKID_SWITCH', states: { '0': 'AP_B_off.png', '1': 'AP_B_on.png' } },
       action: { type: 'cycle_state', output: 'ANTI_SKID_SWITCH', values: ['0', '1'] }
       // view: { type: 'state_image', input: 'ANTI_SKID_SWITCH', states: { '0': 'AP_B_off.png', '1': 'AP_B_on.png' }},
       // action: { type: 'cycle_state', output: 'ANTI_SKID_SWITCH', values: ['0', '1'] }
     },
     2: {
-      view: { type: 'state_label', text: 'LIGHTS', input: 'LANDING_LIGHTS', states: { '0': 'TAXI', '1': 'OFF', '2': 'LAND' }},
+      view: { type: 'state_label', text: 'LIGHTS', input: 'LANDING_LIGHTS', states: { '0': 'TAXI', '1': 'OFF', '2': 'LAND' } },
       action: { type: 'cycle_state', output: 'LANDING_LIGHTS', values: ['0', '1', '2'] }
     },
     3: {
-      view: { type: 'led_label', text: 'LDG GEAR', input: 'HANDLE_GEAR_WARNING', onColor: 0xFF220000 },
-      action: { type: 'cycle_state', output: 'GEAR_LEVER', values: ['0', '1'] }
+      view: { type: 'led_label', text: 'ANTI SKID', input: 'ANTI_SKID_SWITCH' },
+      action: { type: 'cycle_state', output: 'ANTI_SKID_SWITCH', values: ['0', '1'] }
     },
-    4: {
-      view: { type: 'state_label', text: 'MASTER', input: 'AHCP_MASTER_ARM', states: { '0': 'TRAIN', '1': 'SAFE', '2': 'ARM' }},
-      action: { type: 'cycle_state', output: 'AHCP_MASTER_ARM', values: ['0', '1', '2'] }
-    },    
     5: {
-      view: { type: 'state_label', text: 'GUN', input: 'AHCP_GUNPAC', states: { '0': 'GUNARM', '1': 'SAFE', '2': 'ARM' }},
-      action: { type: 'cycle_state', output: 'AHCP_GUNPAC', values: ['0', '1', '2'] }      
-      // view: { type: 'state_image', input: 'MASTER_CAUTION', states: { '0': 'AP_B_off.png', '1': 'AP_B_on.png' }},
-      // action: { type: 'push_button', output: 'UFC_MASTER_CAUTION' }
+      view: { type: 'state_image', input: 'MASTER_CAUTION', states: { '0': 'AP_B_off.png', '1': 'AP_B_on.png' } },
+      action: { type: 'push_button', output: 'UFC_MASTER_CAUTION' }
     },
     6: {
       view: { type: 'state_image', input: 'NMSP_HARS_LED', states: { '0': 'hars_off.png', '1': 'hars_on.png' }},
@@ -63,18 +57,24 @@ var pages = {
   },
   AAP: {
     1: {
-      view: { type: 'label', text: '111'},
+      view: { type: 'label', text: '111' },
     },
     3: {
-      view: { type: 'label', text: 'MAIN'},
+      view: { type: 'label', text: 'MAIN' },
       action: { type: 'page', page: 'MAIN' }
     },
   },
 };
 
+/**
+ * Initialization functions for button views.
+ */
 var initializeViewFn = {
 }
 
+/**
+ * Initialization functions for button actions.
+ */
 var initializeActionFn = {
 }
 
@@ -85,23 +85,30 @@ initializeViewFn['image'] = function(view, key) {
 }
 
 initializeViewFn['state_image'] = function(view, key) {
-  // Draw the new image when the LED state changes.
+  // Draw a different image for each control value
+  // view: { type: 'state_image', input: 'ANTI_SKID_SWITCH', states: { '0': 'AP_B_off.png', '1': 'AP_B_on.png' }},
   api.on(view.input, (currentValue) => {
     view.currentImage = path.resolve(IMAGE_FOLDER + view.states[currentValue]);
     draw(view);
   });
 }
 
-initializeViewFn['state_label'] = function(view, key) {
+initializeViewFn['state_label'] = function (view, key) {
+  // Draw a different text label for each control value
+  // view: { type: 'state_label', text: 'LIGHTS', input: 'LANDING_LIGHTS', states: { '0': 'TAXI', '1': 'OFF', '2': 'LAND' }},
   api.on(view.input, (currentValue) => {
     streamDeck.drawText(view.text + "  " + view.states[currentValue], view.number, { x: 3, bufferOnly: true }).then((buffer) => {
       view.currentImageBuffer = buffer;
       draw(view)
+    }).catch((buffer) => {
+      console.log(error)
     })
   })
 }
 
-initializeViewFn['led_label'] = function(view, key) {
+initializeViewFn['led_label'] = function (view, key) {
+  // Draw a label with different colors based on the control value. 0 => off (white text on black background), 1 => on (black text on color background)
+  // view: { type: 'led_label', text: 'MASTER CAUTION', input: 'MASTER_CAUTION', onColor: 0xFFA50000 },
   api.on(view.input, (currentValue) => {
     streamDeck.drawText(view.text, view.number, 
         { x: 3, 
@@ -119,35 +126,41 @@ initializeViewFn['led_label'] = function(view, key) {
 }
 
 initializeViewFn['label'] = function(view, key) {
-  // Draw a static label
+  // Draw a static label, white on black background
+  // view: { type: 'label', text: 'MAIN' },
   streamDeck.drawText(view.text, view.number, { x: 3,  bufferOnly: true }).then((buffer) => {
     view.currentImageBuffer = buffer
     draw(view)
   })
 }
 
-initializeActionFn['cycle_state'] = function(action, key) {
+initializeActionFn['cycle_state'] = function (action, key) {
+  // Cycle between a fixed set of possible values
+  // action: { type: 'cycle_state', output: 'LANDING_LIGHTS', values: ['0', '1', '2'] }
   streamDeck.on(`up:${action.number}`, () => {
-    let currentValue = api.getControlValue(action.output).toString() 
+    let currentValue = api.getControlValue(action.output).toString()
     let currentValueIndex = action.values.indexOf(currentValue)
-    let newValueIndex = (1 + currentValueIndex ) % action.values.length 
+    let newValueIndex = (1 + currentValueIndex) % action.values.length
     let newValue = action.values[newValueIndex]
     api.sendMessage(`${action.output} ${newValue}\n`);
   });
-  
+
 }
 
-initializeActionFn['push_button'] = function(action, key) {
+initializeActionFn['push_button'] = function (action, key) {
+  // Send 1 when button is pushed, 0 when button is released
+  // action: { type: 'push_button', output: 'UFC_MASTER_CAUTION' }
   streamDeck.on(`down:${action.number}`, () => {
     api.sendMessage(`${action.output} 1\n`);
   });
   streamDeck.on(`up:${action.number}`, () => {
     api.sendMessage(`${action.output} 0\n`);
   });
-  
+
 }
 
-initializeActionFn['page'] = function(action, key) {
+initializeActionFn['page'] = function (action, key) {
+  // switch page on button release
   streamDeck.on(`up:${action.number}`, () => {
     displayPage(action.page);
   });
@@ -208,7 +221,7 @@ function displayPage(pageName) {
 }
 
 function draw(view) {
-  
+
   if (currentPage != view._page) { return; }
 
   if (view.currentImageBuffer) {
@@ -219,23 +232,6 @@ function draw(view) {
   }
   else {
     streamDeck.drawColor(0x000000, view.number);
-  }
-}
-
-/**
- * Create a button that navigates to another page.
- */
-function createPageButton(key) {
-  if (key.image) {
-    var imagePath = path.join(IMAGE_FOLDER, key.image);
-    key.currentImage = imagePath;
-    draw(key);
-  }
-  else if (key.text) {
-    streamDeck.drawText(key.text, key.number, { x: 6, fontFile: './fonts/consolas-24-white/consolas-24-white.fnt', bufferOnly: true }).then((buffer) => {
-      key.currentImageBuffer = buffer;
-      draw(key);
-    });
   }
 }
 
