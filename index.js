@@ -72,16 +72,20 @@ aircraftPages['A-10C'] = {
       view: { type: 'page_label', text: 'PWR', page: 'PWR', fontSize: 16 },
       action: { type: 'page', page: 'PWR' }
     },
-    11: {
+    6: {
+      view: { type: 'page_label', text: 'FSCP', page: 'FSCP', fontSize: 16 },
+      action: { type: 'page', page: 'FSCP' }
+    },
+    /*11: {
       view: { type: 'state_image', input: 'ANTI_SKID_SWITCH', states: { '0': 'AP_B_off.png', '1': 'AP_B_on.png' } },
       action: { type: 'cycle_state', output: 'ANTI_SKID_SWITCH', values: ['0', '1'] }
-    },
+    },*/
     12: {
-      view: { type: 'state_label', text: 'LIGHTS', input: 'LANDING_LIGHTS', states: { '0': 'TAXI', '1': 'OFF', '2': 'LAND' } },
+      view: { type: 'state_image', input: 'LANDING_LIGHTS', states: { '0': 'landing-lights-taxi-01.png', '1': 'landing-lights-off-01.png', '2': 'landing-lights-land-01.png' }},
       action: { type: 'cycle_state', output: 'LANDING_LIGHTS', values: ['0', '1', '2'] }
     },
     13: {
-      view: { type: 'led_label', text: 'ANTI SKID', input: 'ANTI_SKID_SWITCH' },
+      view: { type: 'state_image', input: 'ANTI_SKID_SWITCH', states: { '0': 'anti-skid-off-01.png', '1': 'anti-skid-on-01.png' }},
       action: { type: 'cycle_state', output: 'ANTI_SKID_SWITCH', values: ['0', '1'] }
     },
     15: {
@@ -131,43 +135,43 @@ aircraftPages['A-10C'] = {
       action: { type: 'page', page: 'MAIN' }
     },
     6: {
-      view: { type: 'state_label', text: 'MASTER', input: 'AHCP_MASTER_ARM', states: { '0': 'TRAIN', '1': 'SAFE', '2': 'ARM' } },
+      view: { type: 'state_image', text: 'MASTER', input: 'AHCP_MASTER_ARM', states: { '0': 'master-train-01.png', '1': 'master-safe-01.png', '2': 'master-arm-01.png' } },
       action: { type: 'cycle_state', output: 'AHCP_MASTER_ARM', values: ['0', '1', '2'] }
     },
     7: {
-      view: { type: 'state_label', text: ' GUN ', input: 'AHCP_GUNPAC', states: { '0': 'GUNARM', '1': 'SAFE', '2': 'ARM' } },
+      view: { type: 'state_image', text: ' GUN ', input: 'AHCP_GUNPAC', states: { '0': 'gunpac-gun-01.png', '1': 'gunpac-safe-01.png', '2': 'gunpac-arm-01.png' } },
       action: { type: 'cycle_state', output: 'AHCP_GUNPAC', values: ['0', '1', '2'] }
     },
     8: {
-      view: { type: 'state_label', text: 'ALT SCE', input: 'AHCP_ALT_SCE', states: { '0': 'RADAR', '1': 'DELTA', '2': 'BARO' } },
+      view: { type: 'state_image', text: 'ALT SCE', input: 'AHCP_ALT_SCE', states: { '0': 'alt-sce-radar-01.png', '1': 'alt-sce-delta-01.png', '2': 'alt-sce-baro-01.png' } },
       action: { type: 'cycle_state', output: 'AHCP_ALT_SCE', values: ['0', '1', '2'] }
     },
     9: {
-      view: { type: 'state_label', text: 'HUD CL', input: 'AHCP_HUD_DAYNIGHT', states: { '0': 'NIGHT', '1': 'DAY' } },
+      view: { type: 'state_image', text: 'HUD CL', input: 'AHCP_HUD_DAYNIGHT', states: { '0': 'hud-night-01.png', '1': 'hud-day-01.png' } },
       action: { type: 'cycle_state', output: 'AHCP_HUD_DAYNIGHT', values: ['0', '1'] }
     },
     10: {
-      view: { type: 'state_label', text: 'HUD MD', input: 'AHCP_HUD_MODE', states: { '0': 'STBY', '1': 'NORM' } },
+      view: { type: 'state_image', text: 'HUD MD', input: 'AHCP_HUD_MODE', states: { '0': 'hud-stby-01.png', '1': 'hud-norm-01.png' } },
       action: { type: 'cycle_state', output: 'AHCP_HUD_MODE', values: ['0', '1'] }
     },
     11: {
-      view: { type: 'state_label', text: 'LASER', input: 'AHCP_LASER_ARM', states: { '0': 'TRAIN', '1': 'SAFE', '2': 'ARM' } },
+      view: { type: 'state_image', text: 'LASER', input: 'AHCP_LASER_ARM', states: { '0': 'laser-train-01.png', '1': 'laser-safe-01.png', '2': 'laser-arm-01.png' } },
       action: { type: 'cycle_state', output: 'AHCP_LASER_ARM', values: ['0', '1', '2'] }
     },
     12: {
-      view: { type: 'state_label', text: ' TGP ', input: 'AHCP_TGP', states: { '0': 'OFF', '1': 'ON'} },
+      view: { type: 'state_image', text: ' TGP ', input: 'AHCP_TGP', states: { '0': 'tgp-off-01.png', '1': 'tgp-on-01.png'} },
       action: { type: 'cycle_state', output: 'AHCP_TGP', values: ['0', '1'] }
     },
     13: {
-      view: { type: 'state_label', text: ' CICU ', input: 'AHCP_CICU', states: { '0': 'OFF', '1': 'ON'} },
+      view: { type: 'state_image', text: ' CICU ', input: 'AHCP_CICU', states: { '0': 'cicu-off-01.png', '1': 'cicu-on-01.png'} },
       action: { type: 'cycle_state', output: 'AHCP_CICU', values: ['0', '1'] }
     },
     14: {
-      view: { type: 'state_label', text: ' JTRS ', input: 'AHCP_JTRS', states: { '0': 'OFF', '1': 'ON'} },
+      view: { type: 'state_image', text: ' JTRS ', input: 'AHCP_JTRS', states: { '0': 'jtrs-off-01.png', '1': 'jtrs-on-01.png'} },
       action: { type: 'cycle_state', output: 'AHCP_JTRS', values: ['0', '1'] }
     },
     15: {
-      view: { type: 'state_label', text: 'IFFCC', input: 'AHCP_IFFCC', states: { '0': 'OFF', '1': 'TEST', '2': 'ON' } },
+      view: { type: 'state_image', text: 'IFFCC', input: 'AHCP_IFFCC', states: { '0': 'iffcc-off-01.png', '1': 'iffcc-test-01.png', '2': 'iffcc-on-01.png' } },
       action: { type: 'cycle_state', output: 'AHCP_IFFCC', values: ['0', '1', '2'] }
     },
   },
@@ -240,56 +244,118 @@ aircraftPages['A-10C'] = {
     },
 
     3: {
-      view: { type: 'state_label', text: 'APU GEN', input: 'EPP_APU_GEN_PWR', states: { '0': 'OFF', '1': 'PWR' } },
+      view: { type: 'state_image', text: 'APU GEN', input: 'EPP_APU_GEN_PWR', states: { '0': 'apu-gen-off-01.png', '1': 'apu-gen-pwr-01.png' } },
       action: { type: 'cycle_state', output: 'EPP_APU_GEN_PWR', values: ['0', '1'] }
     },
     4: {
-      view: { type: 'state_label', text: 'INVRTR', input: 'EPP_INVERTER', states: { '0': 'TEST', '1': 'OFF', '2': 'STBY' } },
+      view: { type: 'state_image', text: 'INVRTR', input: 'EPP_INVERTER', states: { '0': 'inverter-test-01.png', '1': 'inverter-off-01.png', '2': 'inverter-stby-01.png' } },
       action: { type: 'cycle_state', output: 'EPP_INVERTER', values: ['0', '1', '2'] }
     },
     5: {
-      view: { type: 'state_label', text: 'EMER', input: 'EPP_EMER_FLOOD', states: { '0': 'OFF', '1': 'FLOOD'  } },
+      view: { type: 'state_image', text: 'EMER', input: 'EPP_EMER_FLOOD', states: { '0': 'emer-flood-off-01.png', '1': 'emer-flood-on-01.png'  } },
       action: { type: 'cycle_state', output: 'EPP_EMER_FLOOD', values: ['0', '1'] }
     },
     6: {
-      view: { type: 'state_label', text: 'PITOT', input: 'ENVCP_PITOT_HEAT', states: { '0': 'OFF', '1': 'ON'  } },
+      view: { type: 'state_image', text: 'PITOT', input: 'ENVCP_PITOT_HEAT', states: { '0': 'pitot-off-01.png', '1': 'pitot-on-01.png'  } },
       action: { type: 'cycle_state', output: 'ENVCP_PITOT_HEAT', values: ['0', '1'] }
     },
     7: {
-      view: { type: 'state_label', text: 'BLEED', input: 'ENVCP_BLEED_AIR', states: { '0': 'OFF', '1': 'ON'  } },
+      view: { type: 'state_image', text: 'BLEED', input: 'ENVCP_BLEED_AIR', states: { '0': 'bleed-off-01.png', '1': 'bleed-on-01.png'  } },
       action: { type: 'cycle_state', output: 'ENVCP_BLEED_AIR', values: ['0', '1'] }
     },
     8: {
-      view: { type: 'state_label', text: 'AC GEN L', input: 'EPP_AC_GEN_PWR_L', states: { '0': 'OFF', '1': 'PWR' } },
+      view: { type: 'state_image', text: 'AC GEN L', input: 'EPP_AC_GEN_PWR_L', states: { '0': 'ac-gen-l-off-01.png', '1': 'ac-gen-l-pwr-01.png' } },
       action: { type: 'cycle_state', output: 'EPP_AC_GEN_PWR_L', values: ['0', '1'] }
     },
     9: {
-      view: { type: 'state_label', text: 'AC GEN R', input: 'EPP_AC_GEN_PWR_R', states: { '0': 'OFF', '1': 'PWR' } },
+      view: { type: 'state_image', text: 'AC GEN R', input: 'EPP_AC_GEN_PWR_R', states: { '0': 'ac-gen-r-off-01.png', '1': 'ac-gen-r-pwr-01.png' } },
       action: { type: 'cycle_state', output: 'EPP_AC_GEN_PWR_R', values: ['0', '1'] }
     },
     10: {
-      view: { type: 'state_label', text: 'BATTERY', input: 'EPP_BATTERY_PWR', states: { '0': 'OFF', '1': 'PWR' } },
+      view: { type: 'state_image', text: 'BATTERY', input: 'EPP_BATTERY_PWR', states: { '0': 'battery-off-01.png', '1': 'battery-pwr-01.png' } },
       action: { type: 'cycle_state', output: 'EPP_BATTERY_PWR', values: ['0', '1'] }
     },
     11: {
-      view: { type: 'state_label', text: 'POSITION', input: 'LCP_POSITION', states: { '0': 'STEADY', '1': 'OFF', '2': 'FLASH' } },
+      view: { type: 'state_image', text: 'POSITION', input: 'LCP_POSITION', states: { '0': 'position-steady-01.png', '1': 'position-off-01.png', '2': 'position-flash-01.png' } },
       action: { type: 'cycle_state', output: 'LCP_POSITION', values: ['0', '1', '2'] }
     },
     12: {
-      view: { type: 'state_label', text: 'ANTICOLL', input: 'LCP_ANTICOLLISION',  states: { '0': 'OFF', '1': 'ON' } },
+      view: { type: 'state_image', text: 'ANTICOLL', input: 'LCP_ANTICOLLISION',  states: { '0': 'anticollision-off-01.png', '1': 'anticollision-on-01.png' } },
       action: { type: 'cycle_state', output: 'LCP_ANTICOLLISION', values: ['0', '1'] }
     },
     13: {
-      view: { type: 'state_label', text: 'CDU', input: 'AAP_CDUPWR', states: { '0': 'OFF', '1': 'ON' } },
+      view: { type: 'state_image', text: 'CDU', input: 'AAP_CDUPWR', states: { '0': 'cdu-off-01.png', '1': 'cdu-on-01.png' } },
       action: { type: 'cycle_state', output: 'AAP_CDUPWR', values: ['0', '1'] }
     },
     14: {
-      view: { type: 'state_label', text: 'EGI', input: 'AAP_EGIPWR', states: { '0': 'OFF', '1': 'ON' } },
+      view: { type: 'state_image', text: 'EGI', input: 'AAP_EGIPWR', states: { '0': 'egi-off-01.png', '1': 'egi-on-01.png' } },
       action: { type: 'cycle_state', output: 'AAP_EGIPWR', values: ['0', '1'] }
     },
     15: {
-      view: { type: 'state_label', text: 'OXYGEN', input: 'OXY_SUPPLY', states: { '0': 'OFF', '1': 'ON' } },
+      view: { type: 'state_image', text: 'OXYGEN', input: 'OXY_SUPPLY', states: { '0': 'oxygen-off-01.png', '1': 'oxygen-on-01.png' } },
       action: { type: 'cycle_state', output: 'OXY_SUPPLY', values: ['0', '1'] }
+    },
+  },
+  FSCP: {
+    1: {
+      view: { type: 'page_label', text: 'MAIN', page: 'MAIN' },
+      action: { type: 'page', page: 'MAIN' }
+    },
+    2: {
+      view: { type: 'state_image', input: 'FSCP_EXT_TANKS_WING', states: { '0': 'ext-tks-wing-off-01.png', '1': 'ext-tks-wing-on-01.png' } },
+      action: { type: 'cycle_state', output: 'FSCP_EXT_TANKS_WING', values: ['0', '1'] }
+    },
+    3: {
+      view: { type: 'state_image', input: 'FSCP_EXT_TANKS_FUS', states: { '0': 'ext-tks-fus-off-01.png', '1': 'ext-tks-fus-on-01.png' } },
+      action: { type: 'cycle_state', output: 'FSCP_EXT_TANKS_FUS', values: ['0', '1'] }
+    },
+    4: {
+      view: { type: 'state_image',  input: 'FSCP_LINE_CHECK', states: { '0': 'line-check-off-01.png', '1': 'line-check-test-01.png' } },
+      action: { type: 'push_button', output: 'FSCP_LINE_CHECK' }
+    },
+    5: {
+      view: { type: 'state_image',  input: 'FSCP_RCVR_LEVER', states: { '1': 'rcvr-close-01.png', '0': 'rcvr-open-01.png'  } },
+      action: { type: 'cycle_state', output: 'FSCP_RCVR_LEVER', values: ['0', '1'] }
+    },
+    6: {
+      view: { type: 'state_image',  input: 'FSCP_TK_GATE', states: { '1': 'tk-gate-open-01.png', '0': 'tk-gate-close-01.png'  } },
+      action: { type: 'cycle_state', output: 'FSCP_TK_GATE', values: ['0', '1'] }
+    },
+    7: {
+      view: { type: 'state_image',  input: 'FSCP_BOOST_WING_L', states: { '0': 'boost-pump-wing-l-off-01.png', '1': 'boost-pump-wing-l-on-01.png'  } },
+      action: { type: 'cycle_state', output: 'FSCP_BOOST_WING_L', values: ['0', '1'] }
+    },
+    8: {
+      view: { type: 'state_image',  input: 'FSCP_BOOST_WING_R', states: { '0': 'boost-pump-wing-r-off-01.png', '1': 'boost-pump-wing-r-on-01.png'  } },
+      action: { type: 'cycle_state', output: 'FSCP_BOOST_WING_R', values: ['0', '1'] }
+    },
+    9: {
+      view: { type: 'state_image',  input: 'FSCP_FD_WING_L', states: { '0': 'fill-disable-wing-l-off-01.png', '1': 'fill-disable-wing-l-dis-01.png' } },
+      action: { type: 'cycle_state', output: 'FSCP_FD_WING_L', values: ['0', '1'] }
+    },
+    10: {
+      view: { type: 'state_image',   input: 'FSCP_FD_WING_R', states: { '0': 'fill-disable-wing-r-off-01.png', '1': 'fill-disable-wing-r-dis-01.png' } },
+      action: { type: 'cycle_state', output: 'FSCP_FD_WING_R', values: ['0', '1'] }
+    },
+    11: {
+      view: { type: 'state_image',   input: 'FSCP_CROSSFEED', states: { '0': 'cross-feed-off-01.png', '1': 'cross-feed-on-01.png' } },
+      action: { type: 'cycle_state', output: 'FSCP_CROSSFEED', values: ['0', '1'] }
+    },
+    12: {
+      view: { type: 'state_image',  input: 'FSCP_BOOST_MAIN_L', states: { '0': 'boost-pump-main-l-off-01.png', '1': 'boost-pump-main-l-on-01.png'  } },
+      action: { type: 'cycle_state', output: 'FSCP_BOOST_MAIN_L', values: ['0', '1'] }
+    },
+    13: {
+      view: { type: 'state_image',  input: 'FSCP_BOOST_MAIN_R', states: { '0': 'boost-pump-main-r-off-01.png', '1': 'boost-pump-main-r-on-01.png'  } },
+      action: { type: 'cycle_state', output: 'FSCP_BOOST_MAIN_R', values: ['0', '1'] }
+    },
+    14: {
+      view: { type: 'state_image',  input: 'FSCP_FD_MAIN_L', states: { '0': 'fill-disable-main-l-off-01.png', '1': 'fill-disable-main-l-dis-01.png' } },
+      action: { type: 'cycle_state', output: 'FSCP_FD_MAIN_L', values: ['0', '1'] }
+    },
+    15: {
+      view: { type: 'state_image',   input: 'FSCP_FD_MAIN_R', states: { '0': 'fill-disable-main-r-off-01.png', '1': 'fill-disable-main-r-dis-01.png' } },
+      action: { type: 'cycle_state', output: 'FSCP_FD_MAIN_R', values: ['0', '1'] }
     },
   }
 }
@@ -470,6 +536,14 @@ api.on('_ACFT_NAME', function(acft){
     }
   }
 })
+
+var acft = 'A-10C'
+if (aircraftPages[acft]) {
+  pages = aircraftPages[acft]
+  initializePages(pages)
+  displayPage('MAIN');
+}
+
 
 /*
 pages = aircraftPages['A-10C']
