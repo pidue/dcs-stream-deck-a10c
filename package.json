@@ -22,9 +22,10 @@
     "audio-loader": "^1.0.3",
     "audio-play": "^2.2.1",
     "dcs-bios-api": "latest",
-    "robotjs": "^0.5.1",
-    "stream-deck-api": "latest",
+    "jimp": "^0.6.0",
+    "meow": "^5.0.0",
     "nan": "latest",
-    "jimp": "^0.6.0"
+    "robotjs": "^0.5.1",
+    "stream-deck-api": "latest"
   }
 }

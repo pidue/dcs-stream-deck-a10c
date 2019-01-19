@@ -3,6 +3,7 @@ const DcsBiosApi = require('dcs-bios-api');
 const path = require('path');
 const robot = require('robotjs');
 const Jimp = require('jimp')
+const meow = require('meow');
 
 const IMAGE_FOLDER = './images/';
 const ICON_SIZE = 72
@@ -24,17 +25,19 @@ process.on('SIGINT', () => {
 streamDeck.reset();
 
 
-String.prototype.centerJustify = function( length, char ) {
-  var i=0;
-var str= this;
-var toggle= true;
-  while ( i + this.length < length ) {
+
+
+String.prototype.centerJustify = function (length, char) {
+  var i = 0;
+  var str = this;
+  var toggle = true;
+  while (i + this.length < length) {
     i++;
-  if(toggle)
-    str = str+ char;
-  else
-    str = char+str;
-  toggle = !toggle;
+    if (toggle)
+      str = str + char;
+    else
+      str = char + str;
+    toggle = !toggle;
   }
   return str;
 }
@@ -48,6 +51,30 @@ var aircraftPages = {
     }
   }
 } 
+
+/*
+
+
+pagina MISC (per startup)
+ejection seat *
+due MFCD * 
+quattro SAS + takeoff trim *
+canopy open close * 
+landing gear * 
+landing lights *
+anti skid *
+
+pagina VIEW
+le varie viste... (come si fanno? combinazioni di tasti?)
+
+pagina MAIN
+CMSP Mode **
+GUN/PAC **
+landing gear **
+rwr display CMSC_PRI *
+jammer program **
+
+*/
 
 
 aircraftPages['A-10C'] = {
@@ -64,35 +91,54 @@ aircraftPages['A-10C'] = {
       view: { type: 'page_image', page: 'AHCP', image: 'page-ahcp-01.png', selImage: 'page-ahcp-sel-01.png' },
       action: { type: 'page', page: 'AHCP' }
     },
+    4: {
+      view: { type: 'page_image', page: 'VIEW', image: 'page-view-01.png', selImage: 'page-view-sel-01.png' },
+      action: { type: 'page', page: 'VIEW' }
+    },
     5: {
       view: { type: 'state_image', input: 'MASTER_CAUTION',  states: { '0': 'master-caution-off-01.png', '1': 'master-caution-on-01.png' } },
       action: { type: 'push_button', output: 'UFC_MASTER_CAUTION' }
     },
     6: {
-      view: { type: 'page_label', text: 'FSCP', page: 'FSCP', fontSize: 16 },
+      view: { type: 'image', image: 'page-fscp-01.png' },
       action: { type: 'page', page: 'FSCP' }
     },
     7: {
-      view: { type: 'page_label', text: 'CMSP', page: 'CMSP', fontSize: 16 },
+      view: { type: 'image', image: 'page-cmsp-01.png' },
       action: { type: 'page', page: 'CMSP' }
     },
     8: {
-      view: { type: 'page_label', text: 'PWR', page: 'PWR', fontSize: 16 },
+      view: { type: 'image', image: 'page-pwr-01.png' },
       action: { type: 'page', page: 'PWR' }
     },
-    /*11: {
-      view: { type: 'state_image', input: 'ANTI_SKID_SWITCH', states: { '0': 'AP_B_off.png', '1': 'AP_B_on.png' } },
-      action: { type: 'cycle_state', output: 'ANTI_SKID_SWITCH', values: ['0', '1'] }
-    },*/
+    9: {
+      view: { type: 'image', image: 'page-misc-01.png' },
+      action: { type: 'page', page: 'MISC' }
+    },
+    10: {
+      view: { type: 'state_image', input: 'GEAR_LEVER', states: { '0': 'landing-gear-up-01.png', '1': 'landing-gear-down-01.png' }},
+      action: { type: 'toggle', output: 'GEAR_LEVER' }
+    },
+    11: {
+      view: { type: 'state_image', input: 'CMSP_MODE', states: { '0': 'cmsp-mode-off-01.png', '1': 'cmsp-mode-stby-01.png', '2': 'cmsp-mode-man-01.png', '3': 'cmsp-mode-semi-01.png', '4': 'cmsp-mode-auto-01.png' } },
+      action: { type: 'cycle_state', output: 'CMSP_MODE', values: ['2', '3', '4'] }
+    },
     12: {
-      view: { type: 'state_image', input: 'LANDING_LIGHTS', states: { '0': 'landing-lights-taxi-01.png', '1': 'landing-lights-off-01.png', '2': 'landing-lights-land-01.png' }},
-      action: { type: 'cycle_state', output: 'LANDING_LIGHTS', values: ['0', '1', '2'] }
+      view: { type: 'state_image',  input: 'AHCP_GUNPAC', states: { '0': 'gunpac-gun-01.png', '1': 'gunpac-safe-01.png', '2': 'gunpac-arm-01.png' } },
+      action: { type: 'cycle_state', output: 'AHCP_GUNPAC', values: ['0', '1', '2'] }
     },
     13: {
-      view: { type: 'state_image', input: 'ANTI_SKID_SWITCH', states: { '0': 'anti-skid-off-01.png', '1': 'anti-skid-on-01.png' }},
-      action: { type: 'cycle_state', output: 'ANTI_SKID_SWITCH', values: ['0', '1'] }
+      view: { type: 'image', image: 'rwr-sep-01.png' },
+      action: { type: 'push_button', output: 'CMSC_SEP' }
     },
-    
+    14: {
+      view: { type: 'state_image', input: 'CMSC_PRIO', states: { '0': 'rwr-pri-norm-01.png', '1': 'rwr-pri-pri-01.png' }},
+      action: { type: 'push_button', output: 'CMSC_PRI' }
+    },
+    15: {
+      view: { type: 'image', image: 'jmr-prog-01.png' },
+      action: { type: 'push_button', output: 'CMSC_JMR' }
+    },
         
     
   },
@@ -108,6 +154,10 @@ aircraftPages['A-10C'] = {
     3: {
       view: { type: 'page_image', page: 'AHCP', image: 'page-ahcp-01.png', selImage: 'page-ahcp-sel-01.png' },
       action: { type: 'page', page: 'AHCP' }
+    },
+    4: {
+      view: { type: 'page_image', page: 'VIEW', image: 'page-view-01.png', selImage: 'page-view-sel-01.png' },
+      action: { type: 'page', page: 'VIEW' }
     },
     5: {
       view: { type: 'state_image', input: 'MASTER_CAUTION',  states: { '0': 'master-caution-off-01.png', '1': 'master-caution-on-01.png' } },
@@ -155,6 +205,10 @@ aircraftPages['A-10C'] = {
       view: { type: 'page_image', page: 'AHCP', image: 'page-ahcp-01.png', selImage: 'page-ahcp-sel-01.png' },
       action: { type: 'page', page: 'AHCP' }
     },
+    4: {
+      view: { type: 'page_image', page: 'VIEW', image: 'page-view-01.png', selImage: 'page-view-sel-01.png' },
+      action: { type: 'page', page: 'VIEW' }
+    },
     5: {
       view: { type: 'state_image', input: 'MASTER_CAUTION',  states: { '0': 'master-caution-off-01.png', '1': 'master-caution-on-01.png' } },
       action: { type: 'push_button', output: 'UFC_MASTER_CAUTION' }
@@ -198,6 +252,38 @@ aircraftPages['A-10C'] = {
     15: {
       view: { type: 'state_image', text: 'IFFCC', input: 'AHCP_IFFCC', states: { '0': 'iffcc-off-01.png', '1': 'iffcc-test-01.png', '2': 'iffcc-on-01.png' } },
       action: { type: 'cycle_state', output: 'AHCP_IFFCC', values: ['0', '1', '2'] }
+    },
+  },
+  VIEW: {
+    1: {
+      view: { type: 'page_image', page: 'MAIN', image: 'page-main-01.png', selImage: 'page-main-sel-01.png' },
+      action: { type: 'page', page: 'MAIN' }
+    },
+    2: {
+      view: { type: 'page_image', page: 'NMSP', image: 'page-nmsp-01.png', selImage: 'page-nmsp-sel-01.png' },
+      action: { type: 'page', page: 'NMSP' }
+    },
+    3: {
+      view: { type: 'page_image', page: 'AHCP', image: 'page-ahcp-01.png', selImage: 'page-ahcp-sel-01.png' },
+      action: { type: 'page', page: 'AHCP' }
+    },
+    4: {
+      view: { type: 'page_image', page: 'VIEW', image: 'page-view-01.png', selImage: 'page-view-sel-01.png' },
+      action: { type: 'page', page: 'VIEW' }
+    },
+    5: {
+      view: { type: 'state_image', input: 'MASTER_CAUTION',  states: { '0': 'master-caution-off-01.png', '1': 'master-caution-on-01.png' } },
+      action: { type: 'push_button', output: 'UFC_MASTER_CAUTION' }
+    },
+  },
+  MISC: {
+    1: {
+      view: { type: 'page_image', page: 'MAIN', image: 'page-main-01.png', selImage: 'page-main-sel-01.png' },
+      action: { type: 'page', page: 'MAIN' }
+    },
+    5: {
+      view: { type: 'state_image', input: 'MASTER_CAUTION',  states: { '0': 'master-caution-off-01.png', '1': 'master-caution-on-01.png' } },
+      action: { type: 'push_button', output: 'UFC_MASTER_CAUTION' }
     },
   },
   CMSP: {
@@ -519,6 +605,17 @@ initializeActionFn['cycle_state'] = function (action, key) {
     let newValueIndex = (1 + currentValueIndex) % action.values.length
     let newValue = action.values[newValueIndex]
     api.sendMessage(`${action.output} ${newValue}\n`);
+    console.log(`${action.output} ${newValue}\n`)
+  });
+
+}
+
+initializeActionFn['toggle'] = function (action, key) {
+  // Toggle a control
+  // action: { type: 'toggle', output: 'LANDING_LIGHTS' }
+  streamDeck.on(`up:${action.number}`, () => {
+    api.sendMessage(`${action.output} TOGGLE\n`);
+    console.log(`${action.output} TOGGLE\n`)
   });
 
 }
@@ -556,33 +653,39 @@ initializeActionFn['page'] = function (action, key) {
   });
 }
 
-var currentAcft
-api.on('_ACFT_NAME', function(acft){
-  acft = acft.replace(/[^A-Za-z0-9\-]/g, '');
-  if (acft != currentAcft) {
-    currentAcft = acft
-    console.log("Aircraft: '" + acft + "'")
-    if (aircraftPages[acft]) {
-      pages = aircraftPages[acft]
-      initializePages(pages)
-      displayPage('MAIN');
-    }
-  }
-})
+const cli = meow(`
+TODO
+`, {
+	flags: {
+		aircraft: {
+			type: 'string',
+			alias: 'a'
+		}
+	}
+});
 
-var acft = 'A-10C'
-if (aircraftPages[acft]) {
-  pages = aircraftPages[acft]
+var currentAcft
+if (cli.flags.aircraft && aircraftPages[cli.flags.aircraft]) {
+  currentAcft = cli.flags.aircraft
+  console.log("Aircraft: '" + currentAcft + "'")
+  pages = aircraftPages[currentAcft]
   initializePages(pages)
   displayPage('MAIN');
+} else {
+  api.on('_ACFT_NAME', function(acft){
+    acft = acft.replace(/[^A-Za-z0-9\-]/g, '');
+    if (acft != currentAcft) {
+      currentAcft = acft
+      if (aircraftPages[currentAcft]) {
+        console.log("Aircraft: '" + currentAcft + "'")
+        pages = aircraftPages[acft]
+        initializePages(pages)
+        displayPage('MAIN');
+      }
+    }
+  })  
 }
 
-
-/*
-pages = aircraftPages['A-10C']
-initializePages(pages)
-displayPage('MAIN');
-*/
 
 function initializePages(pages) {
   Object.keys(pages).forEach((pageName) => {
@@ -607,7 +710,7 @@ function initializeView(key) {
     if (fn) {
       fn(key.view, key)
     } else {
-      console.log("Invalid view type: " + key.view.number)
+      console.log("Invalid view type: " + key.view.number, key.view.type)
     }
   } else {
     key.view = {}
