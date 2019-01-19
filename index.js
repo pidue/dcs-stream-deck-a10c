@@ -53,28 +53,32 @@ var aircraftPages = {
 aircraftPages['A-10C'] = {
   MAIN: {
     1: {
-      view: { type: 'page_label', text: 'MAIN', page: 'MAIN', fontSize: 16 },
+      view: { type: 'page_image', page: 'MAIN', image: 'page-main-01.png', selImage: 'page-main-sel-01.png' },
       action: { type: 'page', page: 'MAIN' }
     },
     2: {
-      view: { type: 'page_label', text: 'NMSP', page: 'NMSP', fontSize: 16 },
+      view: { type: 'page_image', page: 'NMSP', image: 'page-nmsp-01.png', selImage: 'page-nmsp-sel-01.png' },
       action: { type: 'page', page: 'NMSP' }
     },
     3: {
-      view: { type: 'page_label', text: 'AHCP', page: 'AHCP', fontSize: 16 },
+      view: { type: 'page_image', page: 'AHCP', image: 'page-ahcp-01.png', selImage: 'page-ahcp-sel-01.png' },
       action: { type: 'page', page: 'AHCP' }
     },
-    4: {
-      view: { type: 'page_label', text: 'CMSP', page: 'CMSP', fontSize: 16 },
-      action: { type: 'page', page: 'CMSP' }
-    },
     5: {
-      view: { type: 'page_label', text: 'PWR', page: 'PWR', fontSize: 16 },
-      action: { type: 'page', page: 'PWR' }
+      view: { type: 'state_image', input: 'MASTER_CAUTION',  states: { '0': 'master-caution-off-01.png', '1': 'master-caution-on-01.png' } },
+      action: { type: 'push_button', output: 'UFC_MASTER_CAUTION' }
     },
     6: {
       view: { type: 'page_label', text: 'FSCP', page: 'FSCP', fontSize: 16 },
       action: { type: 'page', page: 'FSCP' }
+    },
+    7: {
+      view: { type: 'page_label', text: 'CMSP', page: 'CMSP', fontSize: 16 },
+      action: { type: 'page', page: 'CMSP' }
+    },
+    8: {
+      view: { type: 'page_label', text: 'PWR', page: 'PWR', fontSize: 16 },
+      action: { type: 'page', page: 'PWR' }
     },
     /*11: {
       view: { type: 'state_image', input: 'ANTI_SKID_SWITCH', states: { '0': 'AP_B_off.png', '1': 'AP_B_on.png' } },
@@ -88,17 +92,26 @@ aircraftPages['A-10C'] = {
       view: { type: 'state_image', input: 'ANTI_SKID_SWITCH', states: { '0': 'anti-skid-off-01.png', '1': 'anti-skid-on-01.png' }},
       action: { type: 'cycle_state', output: 'ANTI_SKID_SWITCH', values: ['0', '1'] }
     },
-    15: {
-      view: { type: 'led_label', text: 'MASTER CAUTION', input: 'MASTER_CAUTION', onColor: 0xFFA50000 },
-      action: { type: 'push_button', output: 'UFC_MASTER_CAUTION' }
-    },
+    
         
     
   },
   NMSP: {
     1: {
-      view: { type: 'page_label', text: 'MAIN', page: 'MAIN' },
+      view: { type: 'page_image', page: 'MAIN', image: 'page-main-01.png', selImage: 'page-main-sel-01.png' },
       action: { type: 'page', page: 'MAIN' }
+    },
+    2: {
+      view: { type: 'page_image', page: 'NMSP', image: 'page-nmsp-01.png', selImage: 'page-nmsp-sel-01.png' },
+      action: { type: 'page', page: 'NMSP' }
+    },
+    3: {
+      view: { type: 'page_image', page: 'AHCP', image: 'page-ahcp-01.png', selImage: 'page-ahcp-sel-01.png' },
+      action: { type: 'page', page: 'AHCP' }
+    },
+    5: {
+      view: { type: 'state_image', input: 'MASTER_CAUTION',  states: { '0': 'master-caution-off-01.png', '1': 'master-caution-on-01.png' } },
+      action: { type: 'push_button', output: 'UFC_MASTER_CAUTION' }
     },
     6: {
       view: { type: 'state_image', input: 'NMSP_HARS_LED', states: { '0': 'nmsp_hars_off.png', '1': 'nmsp_hars_on.png' }},
@@ -131,8 +144,20 @@ aircraftPages['A-10C'] = {
   },
   AHCP: {
     1: {
-      view: { type: 'page_label', text: 'MAIN', page: 'MAIN' },
+      view: { type: 'page_image', page: 'MAIN', image: 'page-main-01.png', selImage: 'page-main-sel-01.png' },
       action: { type: 'page', page: 'MAIN' }
+    },
+    2: {
+      view: { type: 'page_image', page: 'NMSP', image: 'page-nmsp-01.png', selImage: 'page-nmsp-sel-01.png' },
+      action: { type: 'page', page: 'NMSP' }
+    },
+    3: {
+      view: { type: 'page_image', page: 'AHCP', image: 'page-ahcp-01.png', selImage: 'page-ahcp-sel-01.png' },
+      action: { type: 'page', page: 'AHCP' }
+    },
+    5: {
+      view: { type: 'state_image', input: 'MASTER_CAUTION',  states: { '0': 'master-caution-off-01.png', '1': 'master-caution-on-01.png' } },
+      action: { type: 'push_button', output: 'UFC_MASTER_CAUTION' }
     },
     6: {
       view: { type: 'state_image', text: 'MASTER', input: 'AHCP_MASTER_ARM', states: { '0': 'master-train-01.png', '1': 'master-safe-01.png', '2': 'master-arm-01.png' } },
@@ -177,7 +202,7 @@ aircraftPages['A-10C'] = {
   },
   CMSP: {
     1: {
-      view: { type: 'page_label', text: 'MAIN', page: 'MAIN' },
+      view: { type: 'page_image', page: 'MAIN', image: 'page-main-01.png', selImage: 'page-main-sel-01.png' },
       action: { type: 'page', page: 'MAIN' }
     },
     2: {
@@ -239,7 +264,7 @@ aircraftPages['A-10C'] = {
   },
   PWR: {
     1: {
-      view: { type: 'page_label', text: 'MAIN', page: 'MAIN' },
+      view: { type: 'page_image', page: 'MAIN', image: 'page-main-01.png', selImage: 'page-main-sel-01.png' },
       action: { type: 'page', page: 'MAIN' }
     },
 
@@ -298,7 +323,7 @@ aircraftPages['A-10C'] = {
   },
   FSCP: {
     1: {
-      view: { type: 'page_label', text: 'MAIN', page: 'MAIN' },
+      view: { type: 'page_image', page: 'MAIN', image: 'page-main-01.png', selImage: 'page-main-sel-01.png' },
       action: { type: 'page', page: 'MAIN' }
     },
     2: {
@@ -436,6 +461,14 @@ initializeViewFn['page_label'] = function (view, key) {
     console.log(error)
   })
 
+}
+
+initializeViewFn['page_image'] = function(view, key) {
+
+  // Draw the page  name on white background if the page is selected
+  // view: { type: 'page_label', page: 'NMSP', image: 'xxx.png', selImage: 'xxx-sel.png'},
+  view.currentImage = path.resolve(IMAGE_FOLDER + (view._page == view.page ? view.selImage : view.image));
+  draw(view);
 }
 
 initializeViewFn['led_label'] = function (view, key) {

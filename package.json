@@ -1,16 +1,23 @@
 {
-  "name": "dcs-stream-deck-ka-50",
+  "name": "dcs-stream-deck-a10c",
   "version": "0.0.1",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
-  "author": "Daniel Tian <dftian@gmail.com>",
+  "author": "Paolo Ferracin <paolo.ferracin@gmail.com>",
+  "contributors": [
+    "Daniel Tian <dftian@gmail.com>"
+  ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:pidue/dcs-stream-deck-a10c.git"
+  },
   "devDependencies": {
     "eslint": "^5.12.0"
   },
-  "description": "Displays Ka-50 controls on an Elgato Stream Deck controller. Requires DCS BIOS.",
+  "description": "Displays A-10C controls on an Elgato Stream Deck controller. Requires DCS BIOS.",
   "dependencies": {
     "audio-loader": "^1.0.3",
     "audio-play": "^2.2.1",
