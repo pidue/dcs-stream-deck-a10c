@@ -56,16 +56,16 @@ var aircraftPages = {
 
 
 pagina MISC (per startup)
-ejection seat *
-due MFCD * 
-quattro SAS + takeoff trim *
-canopy open close * 
-landing gear * 
-landing lights *
-anti skid *
 
-pagina VIEW
+
+
+
+
+pagina VIEW ( o game? )
 le varie viste... (come si fanno? combinazioni di tasti?)
+pausa
+speed +
+speed -
 
 pagina MAIN
 CMSP Mode **
@@ -277,14 +277,80 @@ aircraftPages['A-10C'] = {
     },
   },
   MISC: {
+
+    /*
+    ejection seat 
+due MFCD *
+quattro SAS + takeoff trim 
+canopy open close 
+landing gear 
+landing lights 
+anti skid
+
+MAIN          LANDING LIGHTS    LANDING GEAR    ANTI SKID         MASTER CAUTION
+CANOPY OPEN   LEFT MFD          RIGHT MFD       EJECTION SEAT     T/O TRIM
+CANOPY CLOSE  SAS1              SAS2            SAS3              SAS4
+    */
     1: {
       view: { type: 'page_image', page: 'MAIN', image: 'page-main-01.png', selImage: 'page-main-sel-01.png' },
       action: { type: 'page', page: 'MAIN' }
+    },
+    2: {
+      view: { type: 'state_image', input: 'LANDING_LIGHTS', states: { '0': 'landing-lights-taxi-01.png', '1': 'landing-lights-off-01.png', '2': 'landing-lights-land-01.png' }},
+      action: { type: 'cycle_state', output: 'LANDING_LIGHTS', values: ['0', '1', '2'] }
+    },
+    3: {
+      view: { type: 'state_image', input: 'GEAR_LEVER', states: { '0': 'landing-gear-up-01.png', '1': 'landing-gear-down-01.png' }},
+      action: { type: 'toggle', output: 'GEAR_LEVER' }
+    },
+    4: {
+      view: { type: 'state_image', input: 'ANTI_SKID_SWITCH', states: { '0': 'anti-skid-off-01.png', '1': 'anti-skid-on-01.png' }},
+      action: { type: 'toggle', output: 'ANTI_SKID_SWITCH' }
     },
     5: {
       view: { type: 'state_image', input: 'MASTER_CAUTION',  states: { '0': 'master-caution-off-01.png', '1': 'master-caution-on-01.png' } },
       action: { type: 'push_button', output: 'UFC_MASTER_CAUTION' }
     },
+    6: {
+      view: { type: 'state_image', input: 'CANOPY_UNLOCKED',  states: { '0': 'canopy-open-up-01.png', 1: 'canopy-open-dn-01.png' } },
+      action: { type: 'button', output: 'CANOPY_OPEN', value: '2', releasedValue: '1' }
+    },
+    7: {
+      view: { type: 'state_image', input: 'LMFD_PWR', states: { '0': 'lmfd-off-01.png', '1': 'lmfd-night-01.png', 2: 'lmfd-day-01.png' } },
+      action: { type: 'cycle_state', output: 'LMFD_PWR', values: ['0', '1', '2'] }
+    },
+    8: {
+      view: { type: 'state_image', input: 'RMFD_PWR', states: { '0': 'lmfd-off-01.png', '1': 'lmfd-night-01.png', 2: 'lmfd-day-01.png' } },
+      action: { type: 'cycle_state', output: 'RMFD_PWR', values: ['0', '1', '2'] }
+    },
+    9: {
+      view: { type: 'state_image', input: 'SEAT_ARM',  states: { '0': 'ejection-seat-arm-01.png', '1': 'ejection-seat-safe-01.png' } },
+      action: { type: 'toggle', output: 'SEAT_ARM' }
+    },
+    10: {
+      view: { type: 'state_image', input: 'TAKE_OFF_TRIM', states: { '0': 'takeoff-trim-off-01.png', '1': 'takeoff-trim-on-01.png' }},
+      action: { type: 'push_button', output: 'SASP_TO_TRIM' }
+    },
+    11: {
+      view: { type: 'state_image', input: 'CANOPY_UNLOCKED',  states: { '0': 'canopy-close-dn-01.png', '1': 'canopy-close-up-01.png' } },
+      action: { type: 'spring_loaded', output: 'CANOPY_OPEN', value: '0', releasedValue: '1' }
+    },
+    12: {
+      view: { type: 'state_image', input: 'SASP_YAW_SAS_L',  states: { '0': 'sas-yaw-l-off-01.png', '1': 'sas-yaw-l-on-01.png' } },
+      action: { type: 'cycle_state', output: 'SASP_YAW_SAS_L',  values: ['0', '1'] }
+    },
+    13: {
+      view: { type: 'state_image', input: 'SASP_YAW_SAS_R',  states: { '0': 'sas-yaw-r-off-01.png', '1': 'sas-yaw-r-on-01.png' } },
+      action: { type: 'cycle_state', output: 'SASP_YAW_SAS_R',  values: ['0', '1'] }
+    },
+    14: {
+      view: { type: 'state_image', input: 'SASP_PITCH_SAS_L',  states: { '0': 'sas-pitch-l-off-01.png', '1': 'sas-pitch-l-on-01.png' } },
+      action: { type: 'cycle_state', output: 'SASP_PITCH_SAS_L',  values: ['0', '1'] }
+    },
+    15: {
+      view: { type: 'state_image', input: 'SASP_PITCH_SAS_R',  states: { '0': 'sas-pitch-r-off-01.png', '1': 'sas-pitch-r-on-01.png' } },
+      action: { type: 'cycle_state', output: 'SASP_PITCH_SAS_R',  values: ['0', '1'] }
+    }
   },
   CMSP: {
     1: {
@@ -292,59 +358,59 @@ aircraftPages['A-10C'] = {
       action: { type: 'page', page: 'MAIN' }
     },
     2: {
-      view: { type: 'state_label', text: ' JTSN ', input: 'CMSP_JTSN', states:  { '0': 'OFF', '1': 'ON'} },
+      view: { type: 'state_image', input: 'CMSP_JTSN', states:  { '0': 'jtsn-off-01.png', '1': 'jtsn-on-01.png'} },
       action: { type: 'push_button', output: 'CMSP_JTSN' }
     },
     3: {
-      view: { type: 'led_label', input: 'CMSP_RTN', text: 'RTN' },
-      action: { type: 'push_button', output: 'CMSP_RTN' }
+      view: { type: 'image', image: 'menu-01.png' },
+      action: { type: 'spring_loaded', output: 'CMSP_DISP', value: '2', releasedValue: '1' }
     },
     4: {
-      view: { type: 'label', text: 'DISP MENU' },
-      action: { type: 'spring_loaded', output: 'CMSP_DISP', value: '2' }
+      view: { type: 'image', image: 'rtn-01.png' },
+      action: { type: 'push_button', output: 'CMSP_RTN' }
     },
     5: {
-      view: { type: 'led_label', input: 'CMSP_UPDN', text: 'UP', onValue: '2' },
-      action: { type: 'spring_loaded', output: 'CMSP_UPDN', value: '2' }
+      view: { type: 'image', image: 'up-01.png' },
+      action: { type: 'spring_loaded', output: 'CMSP_UPDN', value: '2', releasedValue: '1' }
     },
     6: {
-      view: { type: 'led_label', input: 'CMSP_ARW1', text: ' SET  CHAF' },
+      view: { type: 'image', image: 'set-01.png', input: 'CMSP_ARW1', text: ' SET  CHAF' },
       action: { type: 'push_button', output: 'CMSP_ARW1' }
     },
     7: {
-      view: { type: 'led_label', input: 'CMSP_ARW2', text: ' SET  FLAR' },
+      view: { type: 'image', image: 'set-01.png',input: 'CMSP_ARW2', text: ' SET  FLAR' },
       action: { type: 'push_button', output: 'CMSP_ARW2' }
     },
     8: {
-      view: { type: 'led_label', input: 'CMSP_ARW3', text: ' SET  INTV' },
+      view: { type: 'image', image: 'set-01.png',input: 'CMSP_ARW3', text: ' SET  INTV' },
       action: { type: 'push_button', output: 'CMSP_ARW3' }
     },
     9: {
-      view: { type: 'led_label', input: 'CMSP_ARW4', text: ' SET  CYCL' },
+      view: { type: 'image', image: 'set-01.png', input: 'CMSP_ARW4', text: ' SET  CYCL' },
       action: { type: 'push_button', output: 'CMSP_ARW4' }
     },
     10: {
-      view: { type: 'led_label', input: 'CMSP_UPDN', text: 'DN', onValue: '0' },
-      action: { type: 'spring_loaded', output: 'CMSP_UPDN', value: '0' }
+      view: { type: 'image', image: 'down-01.png' },
+      action: { type: 'spring_loaded', output: 'CMSP_UPDN', value: '0', releasedValue: '1' }
     },
     11: {
-      view: { type: 'state_label', text: ' MWS ', input: 'CMSP_MWS', states:  { '0': 'OFF', '1': 'ON', '2': 'MENU'} },
+      view: { type: 'state_image', input: 'CMSP_MWS', states:  { '0': 'mws-off-01.png', '1': 'mws-on-01.png', '2': 'mws-on-01.png'} },
       action: { type: 'cycle_state', output: 'CMSP_MWS', values: ['0', '1'] }
     },
     12: {
-      view: { type: 'state_label', text: '  JMR  ', input: 'CMSP_JMR', states: { '0': 'OFF', '1': 'ON', '2': 'MENU'} },
+      view: { type: 'state_image', input: 'CMSP_JMR', states: { '0': 'jmr-off-01.png', '1': 'jmr-on-01.png', '2': 'jmr-on-01.png'} },
       action: { type: 'cycle_state', output: 'CMSP_JMR', values: ['0', '1'] }
     },
     13: {
-      view: { type: 'state_label', text: ' RWR ', input: 'CMSP_RWR', states: { '0': 'OFF', '1': 'ON', '2': 'MENU'} },
+      view: { type: 'state_image', input: 'CMSP_RWR', states: { '0': 'rwr-off-01.png', '1': 'rwr-on-01.png', '2': 'rwr-on-01.png'} },
       action: { type: 'cycle_state', output: 'CMSP_RWR', values: ['0', '1'] }
     },
     14: {
-      view: { type: 'state_label', text: ' DISP ', input: 'CMSP_DISP', states: { '0': 'OFF', '1': 'ON', '2': 'MENU'} },
+      view: { type: 'state_image', input: 'CMSP_DISP', states: { '0': 'disp-off-01.png', '1': 'disp-on-01.png', '2': 'disp-on-01.png'} },
       action: { type: 'cycle_state', output: 'CMSP_DISP', values: ['0', '1'] }
     },
     15: {
-      view: { type: 'state_label', text: ' MODE ', input: 'CMSP_MODE', states: { '0': 'OFF', '1': 'STBY', '2': 'MAN', '3': 'SEMI', '4': 'AUTO' } },
+      view: { type: 'state_image', input: 'CMSP_MODE', states: { '0': 'mode-off-01.png', '1': 'mode-stby-01.png', '2': 'mode-man-01.png', '3': 'mode-semi-01.png', '4': 'mode-auto-01.png' } },
       action: { type: 'cycle_state', output: 'CMSP_MODE', values: ['0', '1', '2', '3', '4'] }
     },
   },
@@ -605,7 +671,6 @@ initializeActionFn['cycle_state'] = function (action, key) {
     let newValueIndex = (1 + currentValueIndex) % action.values.length
     let newValue = action.values[newValueIndex]
     api.sendMessage(`${action.output} ${newValue}\n`);
-    console.log(`${action.output} ${newValue}\n`)
   });
 
 }
@@ -615,7 +680,6 @@ initializeActionFn['toggle'] = function (action, key) {
   // action: { type: 'toggle', output: 'LANDING_LIGHTS' }
   streamDeck.on(`up:${action.number}`, () => {
     api.sendMessage(`${action.output} TOGGLE\n`);
-    console.log(`${action.output} TOGGLE\n`)
   });
 
 }
@@ -632,11 +696,20 @@ initializeActionFn['push_button'] = function (action, key) {
 
 }
 
+initializeActionFn['button'] = function (action, key) {
+  // Send the value when presssed
+  // action: { type: 'button', output: 'UFC_MASTER_CAUTION', value: '2' }
+  streamDeck.on(`down:${action.number}`, () => {
+    api.sendMessage(`${action.output} ${action.value}\n`);
+  });
+
+}
+
 initializeActionFn['spring_loaded'] = function (action, key) {
   // Send the configured value when button is pushed, send the previous value when released
   // action: { type: 'spring_loaded', output: 'UFC_MASTER_CAUTION', value: '2' }
   streamDeck.on(`down:${action.number}`, () => {
-    action._pv = (api.getControlValue(action.output) || '0').toString()
+    action._pv = (action.releasedValue || api.getControlValue(action.output) || '0').toString()
     api.sendMessage(`${action.output} ${action.value}\n`);
   });
   streamDeck.on(`up:${action.number}`, () => {
@@ -732,7 +805,6 @@ function initializeAction(key) {
 
 
 function displayPage(pageName) {
-  console.log("DisplayPage(" + pageName + ")")
   streamDeck.removeButtonListeners();
   currentPage = pageName;
   var page = pages[pageName];
